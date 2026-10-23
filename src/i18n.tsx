@@ -1,0 +1,96 @@
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+const ar = {
+  brand: 'DZ HealthNet', tagline: 'صحتك أولاً، رعايتنا لك', home: 'الرئيسية', doctors: 'الأطباء', pharmacies: 'الصيدليات', labs: 'المخابر',
+  appointments: 'المواعيد', profile: 'حسابي', login: 'دخول', logout: 'تسجيل الخروج', register: 'إنشاء حساب', notifications: 'الإشعارات',
+  heroTitle: 'احجز موعدك مع الطبيب', heroSub: 'اعثر على الطبيب المناسب، في الوقت المناسب، لغدٍ أصح.',
+  placeholder: 'ابحث عن طبيب أو تخصص أو عيادة...', featured: 'أطباء مميزون', seeAll: 'عرض الكل', online: 'متاح اليوم', book: 'احجز موعداً',
+  trustedTitle: 'موثوق به من الجميع', trustedSub: 'رعاية جيدة، حجز سهل، صحة أفضل.',
+  general: 'طب عام', dentist: 'جراح أسنان', pharmacy: 'صيدلية', lab: 'مخبر تحاليل', dermatology: 'جلدية', pediatrics: 'أطفال', cardiology: 'القلب',
+  specTitle: 'اختر التخصص', specSub: 'ابدأ بالطب العام أو اختر تخصصاً محدداً',
+  footerText: 'منصة صحية رقمية تربط المريض بمقدمي الخدمات في الجزائر.', links: 'روابط', rights: 'جميع الحقوق محفوظة', soon: 'هذه الصفحة قيد التطوير',
+  email: 'البريد الإلكتروني', password: 'كلمة المرور', fullName: 'الاسم الكامل', phone: 'الهاتف', iAmPatient: 'مريض', iAmProvider: 'مقدم خدمة',
+  roleDoctor: 'طبيب', providerName: 'اسم العيادة أو المؤسسة', wilaya: 'الولاية', city: 'المدينة', address: 'العنوان', specialty: 'التخصص',
+  submit: 'إرسال', noAccount: 'ليس لديك حساب؟', haveAccount: 'لديك حساب؟', accountType: 'نوع الحساب',
+  nearMe: 'الأقرب إليّ', noResults: 'لا توجد نتائج', kmAway: 'كم', da: 'دج', availableToday: 'متاح اليوم', unavailableToday: 'غير متاح اليوم',
+  reviews: 'التقييمات', noReviews: 'لا توجد تقييمات بعد', chooseTime: 'اختر الموعد', confirmBooking: 'تأكيد الحجز', booked: 'تم إرسال طلب الحجز',
+  cancelAppt: 'إلغاء الموعد', cancelled: 'تم الإلغاء', st_pending: 'قيد الانتظار', st_confirmed: 'مؤكد', st_done: 'منتهٍ', st_cancelled: 'ملغى',
+  noAppointments: 'لا توجد مواعيد', loading: 'جارٍ التحميل...', markAllRead: 'تحديد الكل كمقروء', noNotifications: 'لا توجد إشعارات',
+  consultation: 'سعر الكشف', loginToBook: 'سجّل الدخول لتحجز', search: 'بحث',
+  errGeneric: 'حدث خطأ، حاول مجدداً', errBadCredentials: 'البريد أو كلمة المرور غير صحيحة', errEmailTaken: 'هذا البريد مستعمل',
+  errSlotTaken: 'هذا الموعد محجوز، اختر وقتاً آخر', errPast: 'اختر وقتاً في المستقبل', errNetwork: 'تعذر الاتصال بالخادم',
+  errEmail: 'بريد غير صالح', errPwShort: 'كلمة المرور 8 أحرف على الأقل', errRequired: 'هذا الحقل مطلوب',
+  documents: 'وثائقي', requests: 'طلباتي', inbox: 'الوارد', dashboard: 'لوحتي', upload: 'رفع وثيقة', docTitle: 'عنوان الوثيقة', docKind: 'النوع', chooseFile: 'اختر ملفاً (PDF أو صورة)',
+  kind_prescription: 'وصفة طبية', kind_lab_result: 'نتيجة تحاليل', kind_radiology: 'أشعة', kind_report: 'تقرير طبي', kind_other: 'أخرى',
+  view: 'عرض', remove: 'حذف', share: 'مشاركة', shareTtl: 'مدة الصلاحية', minutes: 'دقيقة', shareHint: 'يعرض المريض هذا الرمز على الطبيب ليفتح هذه الوثيقة فقط', expiresAt: 'ينتهي', revoke: 'إبطال الرمز',
+  sendToProvider: 'أرسل إلى صيدلية أو مخبر', newRequest: 'طلب جديد', req_prescription: 'وصفة إلى الصيدليات', req_lab: 'تحاليل إلى المخابر', chooseDocument: 'اختر الوثيقة',
+  priority: 'الأولوية', prio_normal: 'عادية', prio_urgent: 'مستعجلة', prio_critical: 'حرجة', useLocation: 'حدّد موقعي', locationSet: 'تم تحديد الموقع', locationNeeded: 'حدّد موقعك أولاً',
+  sendRequest: 'إرسال الطلب', requestSent: 'تم إرسال الطلب إلى أقرب مقدمي الخدمة', rs_open: 'مفتوح', rs_accepted: 'تم الحجز', rs_closed: 'مغلق',
+  resp_pending: 'بانتظار الرد', resp_available: 'متوفر', resp_partial: 'متوفر جزئياً', resp_unavailable: 'غير متوفر',
+  acceptThis: 'اختر هذا', expand: 'وسّع البحث', closeReq: 'إغلاق الطلب', noRequests: 'لا توجد طلبات', note: 'ملاحظة', patientName: 'المريض', closedForMe: 'أُغلق لدى مقدم آخر', openDoc: 'فتح الوثيقة',
+  incoming: 'المواعيد الواردة', act_confirm: 'تأكيد', act_done: 'منتهٍ', act_cancel: 'إلغاء', enterToken: 'أدخل رمز المشاركة', open: 'فتح', noItems: 'لا توجد عناصر', expandedN: 'تمت إضافة مقدمي خدمة',
+  errNoNearby: 'لا يوجد مقدمو خدمة قريبون', errFileType: 'نوع الملف غير مدعوم', errTooLarge: 'الملف كبير (الحد 10 ميغا)', errDocInUse: 'الوثيقة مستعملة في طلب', errRequestClosed: 'الطلب مغلق', errExpired: 'الرمز غير صالح أو منتهٍ', errNotEligible: 'يمكنك التقييم بعد موعد منتهٍ فقط',
+  errResetDisabled: 'التهيئة معطلة في إعدادات الخادم (ALLOW_ADMIN_RESET)',
+  writeReview: 'أضف تقييمك', rating: 'التقييم', comment: 'تعليق', sendReview: 'إرسال التقييم', reviewSaved: 'شكراً على تقييمك',
+  admin: 'الإدارة', st_patients: 'المرضى', st_doctors: 'الأطباء', st_dentists: 'جراحو الأسنان', st_pharmacies: 'الصيدليات', st_labs: 'المخابر', st_appointments: 'المواعيد', st_requests: 'الطلبات', st_documents: 'الوثائق',
+  users: 'المستخدمون', searchUsers: 'بحث بالاسم أو البريد', allRoles: 'كل الأدوار', deleteUser: 'حذف', confirmDelete: 'حذف هذا الحساب وكل بياناته نهائياً؟', deleted: 'تم الحذف',
+  dangerZone: 'منطقة الخطر', resetDb: 'إعادة تهيئة قاعدة البيانات', resetHint: 'يحذف كل الحسابات والبيانات عدا حسابات الإدارة. اكتب RESET للتأكيد', resetDone: 'تمت إعادة التهيئة',
+  role_patient: 'مريض', role_doctor: 'طبيب', role_dentist: 'جراح أسنان', role_pharmacy: 'صيدلية', role_lab: 'مخبر', role_admin: 'إدارة',
+  health: 'صحتي', healthIntro: 'هل لديك مرض مزمن؟ أضف أدويتك ليذكّرك التطبيق بمواعيدها', conditions: 'أمراضي المزمنة', myMeds: 'أدويتي', addMed: 'إضافة دواء', medName: 'اسم الدواء', dose: 'الجرعة',
+  addTime: 'إضافة وقت', todaySchedule: 'جرعات اليوم', taken: 'تم أخذه', undo: 'تراجع', enableReminders: 'تفعيل تنبيهات المتصفح', remindersOn: 'التنبيهات مفعّلة', noMeds: 'لا توجد أدوية', remindNow: 'حان موعد دوائك',
+  remindersNote: 'التنبيهات تعمل أثناء فتح التطبيق في المتصفح',
+  cond_diabetes: 'السكري', cond_hypertension: 'ضغط الدم', cond_asthma: 'الربو', cond_heart_disease: 'أمراض القلب', cond_kidney_disease: 'أمراض الكلى', cond_thyroid: 'الغدة الدرقية', cond_epilepsy: 'الصرع', cond_arthritis: 'التهاب المفاصل', cond_other: 'أخرى',
+};
+const en: Record<keyof typeof ar, string> = {
+  brand: 'DZ HealthNet', tagline: 'Your Health. Our Care.', home: 'Home', doctors: 'Doctors', pharmacies: 'Pharmacies', labs: 'Labs',
+  appointments: 'Appointments', profile: 'Profile', login: 'Sign in', logout: 'Sign out', register: 'Create account', notifications: 'Notifications',
+  heroTitle: 'Book Your Doctor Appointment', heroSub: 'Find the right doctor, at the right time, for a healthier tomorrow.',
+  placeholder: 'Search for doctor, specialty, or clinic...', featured: 'Featured Doctors', seeAll: 'See All', online: 'Available today', book: 'Book Appointment',
+  trustedTitle: 'Trusted by millions', trustedSub: 'Quality care, easy booking, better health.',
+  general: 'General Medicine', dentist: 'Dentist', pharmacy: 'Pharmacy', lab: 'Lab', dermatology: 'Dermatology', pediatrics: 'Pediatrics', cardiology: 'Cardiology',
+  specTitle: 'Choose a specialty', specSub: 'Start with general medicine or pick a specialty',
+  footerText: 'A digital health platform connecting patients with providers in Algeria.', links: 'Links', rights: 'All rights reserved', soon: 'This page is under development',
+  email: 'Email', password: 'Password', fullName: 'Full name', phone: 'Phone', iAmPatient: 'Patient', iAmProvider: 'Provider',
+  roleDoctor: 'Doctor', providerName: 'Clinic or business name', wilaya: 'Wilaya', city: 'City', address: 'Address', specialty: 'Specialty',
+  submit: 'Submit', noAccount: "Don't have an account?", haveAccount: 'Already have an account?', accountType: 'Account type',
+  nearMe: 'Near me', noResults: 'No results', kmAway: 'km', da: 'DZD', availableToday: 'Available today', unavailableToday: 'Not available today',
+  reviews: 'Reviews', noReviews: 'No reviews yet', chooseTime: 'Pick a time', confirmBooking: 'Confirm booking', booked: 'Booking request sent',
+  cancelAppt: 'Cancel appointment', cancelled: 'Cancelled', st_pending: 'Pending', st_confirmed: 'Confirmed', st_done: 'Done', st_cancelled: 'Cancelled',
+  noAppointments: 'No appointments', loading: 'Loading...', markAllRead: 'Mark all as read', noNotifications: 'No notifications',
+  consultation: 'Consultation fee', loginToBook: 'Sign in to book', search: 'Search',
+  errGeneric: 'Something went wrong, try again', errBadCredentials: 'Wrong email or password', errEmailTaken: 'This email is already used',
+  errSlotTaken: 'This slot is taken, pick another time', errPast: 'Pick a time in the future', errNetwork: 'Cannot reach the server',
+  errEmail: 'Invalid email', errPwShort: 'Password must be at least 8 characters', errRequired: 'This field is required',
+  documents: 'Documents', requests: 'Requests', inbox: 'Inbox', dashboard: 'Dashboard', upload: 'Upload document', docTitle: 'Document title', docKind: 'Type', chooseFile: 'Choose a file (PDF or image)',
+  kind_prescription: 'Prescription', kind_lab_result: 'Lab result', kind_radiology: 'Radiology', kind_report: 'Medical report', kind_other: 'Other',
+  view: 'View', remove: 'Delete', share: 'Share', shareTtl: 'Valid for', minutes: 'min', shareHint: 'Show this code to the doctor; it opens this document only', expiresAt: 'Expires', revoke: 'Revoke code',
+  sendToProvider: 'Send to a pharmacy or lab', newRequest: 'New request', req_prescription: 'Prescription to pharmacies', req_lab: 'Lab tests to labs', chooseDocument: 'Choose a document',
+  priority: 'Priority', prio_normal: 'Normal', prio_urgent: 'Urgent', prio_critical: 'Critical', useLocation: 'Use my location', locationSet: 'Location set', locationNeeded: 'Set your location first',
+  sendRequest: 'Send request', requestSent: 'Request sent to the nearest providers', rs_open: 'Open', rs_accepted: 'Reserved', rs_closed: 'Closed',
+  resp_pending: 'Waiting', resp_available: 'Available', resp_partial: 'Partially available', resp_unavailable: 'Unavailable',
+  acceptThis: 'Choose this one', expand: 'Widen search', closeReq: 'Close request', noRequests: 'No requests', note: 'Note', patientName: 'Patient', closedForMe: 'Closed by another provider', openDoc: 'Open document',
+  incoming: 'Incoming appointments', act_confirm: 'Confirm', act_done: 'Done', act_cancel: 'Cancel', enterToken: 'Enter share code', open: 'Open', noItems: 'Nothing here', expandedN: 'Providers added',
+  errNoNearby: 'No providers nearby', errFileType: 'Unsupported file type', errTooLarge: 'File too large (10 MB max)', errDocInUse: 'Document is used in a request', errRequestClosed: 'Request is closed', errExpired: 'Invalid or expired code', errNotEligible: 'You can review after a completed visit',
+  errResetDisabled: 'Reset is disabled on the server (ALLOW_ADMIN_RESET)',
+  writeReview: 'Write a review', rating: 'Rating', comment: 'Comment', sendReview: 'Send review', reviewSaved: 'Thanks for your review',
+  admin: 'Admin', st_patients: 'Patients', st_doctors: 'Doctors', st_dentists: 'Dentists', st_pharmacies: 'Pharmacies', st_labs: 'Labs', st_appointments: 'Appointments', st_requests: 'Requests', st_documents: 'Documents',
+  users: 'Users', searchUsers: 'Search by name or email', allRoles: 'All roles', deleteUser: 'Delete', confirmDelete: 'Permanently delete this account and all its data?', deleted: 'Deleted',
+  dangerZone: 'Danger zone', resetDb: 'Reset database', resetHint: 'Deletes all accounts and data except admins. Type RESET to confirm', resetDone: 'Database reset',
+  role_patient: 'Patient', role_doctor: 'Doctor', role_dentist: 'Dentist', role_pharmacy: 'Pharmacy', role_lab: 'Lab', role_admin: 'Admin',
+  health: 'My health', healthIntro: 'Chronic condition? Add your medications and get reminders', conditions: 'Chronic conditions', myMeds: 'My medications', addMed: 'Add medication', medName: 'Medication name', dose: 'Dose',
+  addTime: 'Add time', todaySchedule: "Today's doses", taken: 'Taken', undo: 'Undo', enableReminders: 'Enable browser alerts', remindersOn: 'Alerts enabled', noMeds: 'No medications', remindNow: 'Time for your medication',
+  remindersNote: 'Reminders work while the app is open in your browser',
+  cond_diabetes: 'Diabetes', cond_hypertension: 'Hypertension', cond_asthma: 'Asthma', cond_heart_disease: 'Heart disease', cond_kidney_disease: 'Kidney disease', cond_thyroid: 'Thyroid', cond_epilepsy: 'Epilepsy', cond_arthritis: 'Arthritis', cond_other: 'Other',
+};
+const dict = { ar, en };
+type Lang = 'ar' | 'en'; export type Key = keyof typeof ar;
+const Ctx = createContext<{ lang: Lang; setLang: (l: Lang) => void; t: (k: Key) => string }>(null!);
+export function I18nProvider({ children }: { children: ReactNode }) {
+  const [lang, setLang] = useState<Lang>((localStorage.getItem('lang') as Lang) || 'ar');
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    localStorage.setItem('lang', lang);
+  }, [lang]);
+  return <Ctx.Provider value={{ lang, setLang, t: (k) => dict[lang][k] }}>{children}</Ctx.Provider>;
+}
+export const useI18n = () => useContext(Ctx);

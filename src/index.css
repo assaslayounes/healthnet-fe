@@ -1,0 +1,9 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+:root {
+  --background: 0 0% 100%; --foreground: 200 30% 12%;
+  --primary: 174 78% 30%; --primary-foreground: 0 0% 100%; --primary-soft: 174 60% 95%;
+  --muted: 190 20% 97%; --muted-foreground: 200 10% 40%; --border: 190 15% 90%;
+}
+body { @apply bg-background text-foreground antialiased; }
+html[lang='ar'] body { font-family: 'Cairo', sans-serif; }
+html[lang='en'] body { font-family: 'Inter', sans-serif; }
